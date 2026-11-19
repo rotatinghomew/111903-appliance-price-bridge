@@ -1,0 +1,55 @@
+{
+  "products": [
+    {
+      "sku": "OLD1",
+      "model": "cold-A",
+      "service": "basic",
+      "region": "N"
+    },
+    {
+      "sku": "NEW1",
+      "model": "cold-B",
+      "service": "installed",
+      "region": "N"
+    }
+  ],
+  "observations": [
+    {
+      "sku": "OLD1",
+      "week": "2026-W41",
+      "price": 420,
+      "sales": 18,
+      "available": true
+    },
+    {
+      "sku": "OLD1",
+      "week": "2026-W42",
+      "price": 399,
+      "sales": 22,
+      "available": true
+    },
+    {
+      "sku": "NEW1",
+      "week": "2026-W42",
+      "price": 510,
+      "sales": 6,
+      "available": true
+    }
+  ],
+  "bridges": [
+    {
+      "old": "OLD1",
+      "new": "NEW1",
+      "quality": "review"
+    }
+  ],
+  "contracts": [
+    {
+      "id": "K1",
+      "region": "N",
+      "weight": 1.0,
+      "threshold": 0.04,
+      "signed": false
+    }
+  ]
+}

@@ -32,5 +32,37 @@ class FixtureTest(unittest.TestCase):
             self.assertIn(row["contract"], contracts)
             self.assertTrue(set(row["sources"]) <= set(observations) | set(statements))
 
+    def test_payment_and_fee_ledgers_refer_to_same_settlement_period(self):
+        path = Path(__file__).parents[1] / "data" / "overlap-season.json"
+        value = json.loads(path.read_text(encoding="utf-8"))
+        statements = {row["id"]: row for row in value["fee_statements"]}
+        agreements = {row["id"]: row for row in value["rate_agreements"]}
+        notices = {row["id"]: row for row in value["settlements"]}
+        batches = {row["id"]: row for row in value["bank_batches"]}
+        windows = {row["window"]: row for row in value["payment_windows"]}
+        for resolution in value["fee_resolutions"]:
+            self.assertIn(resolution["selected"], resolution["considered"])
+            for reference in resolution["considered"]:
+                self.assertEqual(statements[reference]["observation"], resolution["observation"])
+                self.assertLessEqual(statements[reference]["received_on"], resolution["signed_on"])
+        for notice in notices.values():
+            if "agreement" in notice:
+                agreement = agreements[notice["agreement"]]
+                self.assertEqual((notice["contract"], notice["period"]), (agreement["contract"], agreement["period"]))
+                self.assertLessEqual(agreement["signed_on"], notice["issue_date"])
+                self.assertTrue(set(agreement["fee_sources"]) <= set(notice["sources"]))
+        for batch in batches.values():
+            window = windows[batch["window"]]
+            self.assertLessEqual(window["from"], batch["sent_on"])
+            self.assertLessEqual(batch["sent_on"], window["through"])
+            for notice_id in batch["notices"]:
+                self.assertLessEqual(notices[notice_id]["issue_date"], batch["sent_on"])
+        for receipt in value["bank_receipts"]:
+            self.assertLessEqual(batches[receipt["batch"]]["sent_on"], receipt["paid_on"])
+            self.assertLessEqual(receipt["paid_on"], receipt["received_on"])
+        for dispute in value["notice_disputes"]:
+            self.assertLessEqual(notices[dispute["notice"]]["issue_date"], dispute["received_on"])
+            self.assertLessEqual(dispute["received_on"], dispute["release_signed_on"])
+
 if __name__ == "__main__":
     unittest.main()

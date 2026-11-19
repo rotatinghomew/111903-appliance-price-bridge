@@ -7,7 +7,7 @@
   ],
   "observations": [
     {"id":"P1","sku":"OLD1","region":"N","week":"2026-W40","status":"traded","price":410,"sales":18},
-    {"id":"P2","sku":"OLD2","region":"N","week":"2026-W40","status":"traded","price":435,"sales":11},
+    {"id":"P2","sku":"OLD2","region":"N","week":"2026-W40","status":"traded","price":415,"sales":11},
     {"id":"P3","sku":"OLD1","region":"N","week":"2026-W41","status":"traded","price":405,"sales":25},
     {"id":"P4","sku":"OLD2","region":"N","week":"2026-W41","status":"offered","price":430,"sales":0},
     {"id":"P5","sku":"NEW1","region":"N","week":"2026-W41","status":"traded","price":510,"sales":6,"installation_fee":null},
@@ -31,10 +31,38 @@
     {"id":"F1","observation":"P5","fee":76,"received_on":"2026-10-14"},
     {"id":"F2","observation":"P6","fee":75,"received_on":"2026-10-21"},
     {"id":"F3","observation":"P6","fee":93,"received_on":"2026-10-27","replaces":"F2"},
-    {"id":"F4","observation":"P6","fee":80,"received_on":"2026-11-01","replaces":"F3"}
+    {"id":"F4","observation":"P6","fee":80,"received_on":"2026-11-01","replaces":"F3"},
+    {"id":"F5","observation":"P6","fee":90,"received_on":"2026-11-05","replaces":"F3"}
+  ],
+  "fee_resolutions": [
+    {"id":"FR1","observation":"P6","considered":["F4","F5"],"selected":"F5","signed_on":"2026-11-06","buyer":"BU-N","merchant":"ME-N"}
+  ],
+  "rate_agreements": [
+    {"id":"A1","contract":"K1","period":"2026-W42","rate":0.05,"fee_sources":["F1","F2"],"signed_on":"2026-10-22","buyer":"BU-N","merchant":"ME-1"},
+    {"id":"A2","contract":"K2","period":"2026-W42","rate":0.06,"fee_sources":["F1","F2"],"signed_on":"2026-10-22","buyer":"BU-N","merchant":"ME-2"},
+    {"id":"A3","contract":"K1","period":"2026-W42","rate":0.0475,"fee_sources":["F1","F4"],"signed_on":"2026-11-02","buyer":"BU-N","merchant":"ME-1"}
   ],
   "settlements": [
-    {"id":"S1","contract":"K1","issue_date":"2026-10-23","period":"2026-W42","amount":800,"kind":"original","sources":["P1","P5","P6","P9","P10","F1","F2"]},
-    {"id":"S2","contract":"K2","issue_date":"2026-10-23","period":"2026-W42","amount":1400,"kind":"original","sources":["P2","P4","P5","P6","F1","F2"]}
+    {"id":"S1","contract":"K1","issue_date":"2026-10-23","period":"2026-W42","amount":800,"kind":"original","agreement":"A1","sources":["P1","P5","P6","P9","P10","F1","F2"]},
+    {"id":"S2","contract":"K2","issue_date":"2026-10-23","period":"2026-W42","amount":1440,"kind":"original","agreement":"A2","sources":["P2","P4","P5","P6","F1","F2"]},
+    {"id":"S3","contract":"K1","issue_date":"2026-10-28","period":"2026-W42","amount":-800,"kind":"difference","sources":["P1","P5","P6","P9","P10","F1","F3"]},
+    {"id":"S4","contract":"K1","issue_date":"2026-11-03","period":"2026-W42","amount":760,"kind":"difference","agreement":"A3","sources":["P1","P5","P6","P9","P10","F1","F4"]}
+  ],
+  "payment_windows": [
+    {"window":"B0","from":"2026-10-23","through":"2026-10-26"},
+    {"window":"B1","from":"2026-10-27","through":"2026-10-30"},
+    {"window":"B2","from":"2026-11-01","through":"2026-11-07"},
+    {"window":"B3","from":"2026-11-09","through":"2026-11-13"}
+  ],
+  "bank_batches": [
+    {"id":"BANK-1","window":"B0","sent_on":"2026-10-26","notices":["S1","S2"]},
+    {"id":"BANK-2","window":"B1","sent_on":"2026-10-30","notices":["S3"]}
+  ],
+  "bank_receipts": [
+    {"receipt":"BR-2","batch":"BANK-2","paid_on":"2026-11-02","received_on":"2026-11-04"},
+    {"receipt":"BR-2","batch":"BANK-2","paid_on":"2026-11-02","received_on":"2026-11-05"}
+  ],
+  "notice_disputes": [
+    {"id":"D1","notice":"S4","received_on":"2026-11-04","release_signed_on":"2026-11-09","buyer":"BU-N","merchant":"ME-1"}
   ]
 }

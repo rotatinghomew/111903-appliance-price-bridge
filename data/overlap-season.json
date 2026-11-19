@@ -1,0 +1,40 @@
+{
+  "products": [
+    {"sku":"OLD1","model":"cold-A","service":"basic","segment":"compact"},
+    {"sku":"OLD2","model":"cold-AA","service":"basic","segment":"compact"},
+    {"sku":"NEW1","model":"cold-B","service":"installed","segment":"compact"},
+    {"sku":"ST1","model":"cold-C","service":"basic","segment":"large"}
+  ],
+  "observations": [
+    {"id":"P1","sku":"OLD1","region":"N","week":"2026-W40","status":"traded","price":410,"sales":18},
+    {"id":"P2","sku":"OLD2","region":"N","week":"2026-W40","status":"traded","price":435,"sales":11},
+    {"id":"P3","sku":"OLD1","region":"N","week":"2026-W41","status":"traded","price":405,"sales":25},
+    {"id":"P4","sku":"OLD2","region":"N","week":"2026-W41","status":"offered","price":430,"sales":0},
+    {"id":"P5","sku":"NEW1","region":"N","week":"2026-W41","status":"traded","price":510,"sales":6,"installation_fee":null},
+    {"id":"P6","sku":"NEW1","region":"N","week":"2026-W42","status":"traded","price":525,"sales":17,"installation_fee":null},
+    {"id":"P7","sku":"OLD1","region":"N","week":"2026-W42","status":"withdrawn","price":null,"sales":0},
+    {"id":"P8","sku":"NEW1","region":"S","week":"2026-W42","status":"not_listed","price":null,"sales":0},
+    {"id":"P9","sku":"ST1","region":"N","week":"2026-W40","status":"traded","price":590,"sales":8},
+    {"id":"P10","sku":"ST1","region":"N","week":"2026-W42","status":"traded","price":605,"sales":10}
+  ],
+  "bridges": [
+    {"old":"OLD1","new":"NEW1","region":"N","relationship":"replacement","quality_price_range":[8,15]},
+    {"old":"OLD2","new":"NEW1","region":"N","relationship":"replacement","quality_price_range":[0,12]},
+    {"old":"OLD1","new":"ST1","region":"N","relationship":"substitute"}
+  ],
+  "contracts": [
+    {"id":"K1","service":"basic","base_week":"2026-W40","current_week":"2026-W42","coverage_min":0.9,"threshold":0.04,"principal":16000,"basket":[{"sku":"OLD1","region":"N","weight":0.65},{"sku":"ST1","region":"N","weight":0.35}]},
+    {"id":"K2","service":"basic","base_week":"2026-W40","current_week":"2026-W42","coverage_min":0.85,"threshold":0.05,"principal":24000,"basket":[{"sku":"OLD2","region":"N","weight":1.0}]},
+    {"id":"K3","service":"basic","base_week":"2026-W40","current_week":"2026-W42","coverage_min":0.9,"threshold":0.04,"principal":19000,"basket":[{"sku":"OLD1","region":"N","weight":0.7},{"sku":"OLD1","region":"S","weight":0.3}]}
+  ],
+  "fee_statements": [
+    {"id":"F1","observation":"P5","fee":76,"received_on":"2026-10-14"},
+    {"id":"F2","observation":"P6","fee":75,"received_on":"2026-10-21"},
+    {"id":"F3","observation":"P6","fee":93,"received_on":"2026-10-27","replaces":"F2"},
+    {"id":"F4","observation":"P6","fee":80,"received_on":"2026-11-01","replaces":"F3"}
+  ],
+  "settlements": [
+    {"id":"S1","contract":"K1","issue_date":"2026-10-23","period":"2026-W42","amount":800,"kind":"original","sources":["P1","P5","P6","P9","P10","F1","F2"]},
+    {"id":"S2","contract":"K2","issue_date":"2026-10-23","period":"2026-W42","amount":1400,"kind":"original","sources":["P2","P4","P5","P6","F1","F2"]}
+  ]
+}

@@ -8,4 +8,6 @@
 
 ## 资料
 
-`data/sample.json` 保存小型合成记录，顶层键分别为 products, observations, bridges, contracts。
+`data/sample.json` 保存早期的一组报价观察。`data/overlap-season.json` 是独立的结算资料，记录两个旧货号的换代、新品分地铺货、安装费订正和联动合同。两组记录不混用。
+
+报价与结算使用同一种币种，均为含税金额。`observations.status` 区分有成交、仅可报价、退市和当地未铺货。`installation_fee` 为空表示报价没有分拆安装费；商户另行提供 `fee_statements`，标明所针对的价格观察、收到日和被替代的说明。`bridges.quality_price_range` 为换代新机相对旧机的硬件质量价差范围，不包括安装服务。`contracts.basket` 用货号和地区标识每个权重位置；`contracts.principal` 是调价所用的合同计价金额。`settlements.amount` 是已签发的调价金额，不含合同计价金额，`sources` 指向签发当时引用的价格与服务费凭据。

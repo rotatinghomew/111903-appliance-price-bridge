@@ -4,6 +4,43 @@ from pathlib import Path
 import unittest
 
 class FixtureTest(unittest.TestCase):
+    def test_index_publications_link_in_order_to_regional_quotes_and_contracts(self):
+        data = Path(__file__).parents[1] / "data"
+        season = json.loads((data / "overlap-season.json").read_text(encoding="utf-8"))
+        chain = json.loads((data / "publication_chain.json").read_text(encoding="utf-8"))
+        observations = {row["id"]: row for row in season["observations"] + chain["observations"]}
+        fees = {row["id"]: row for row in season["fee_statements"] + chain["fee_statements"]}
+        series = {row["series"]: row for row in chain["series"]}
+        claims = {row["id"]: row for row in chain["quality_claims"]}
+        links = {row["id"]: row for row in chain["confirmed_links"]}
+        editions = {row["id"]: row for row in chain["editions"]}
+        for link in links.values():
+            market = series[link["series"]]["region"]
+            old = observations[link["old_observation"]]
+            new = observations[link["new_observation"]]
+            claim = claims[link["claim"]]
+            self.assertEqual((old["region"], new["region"]), (market, market))
+            self.assertEqual((old["sku"], new["sku"]), (claim["old"], claim["new"]))
+            self.assertIn(market, claim["regions"])
+            if old["week"] != new["week"]:
+                self.assertTrue(link["cross_gap"] and link["buyer"] and link["merchant"])
+        for edition in editions.values():
+            for fee_id in edition["charges"]:
+                self.assertIn(fees[fee_id]["observation"], edition["observations"])
+                self.assertLessEqual(fees[fee_id]["received_on"], edition["published_on"])
+            for link_id in edition["links"]:
+                self.assertEqual(links[link_id]["series"], edition["series"])
+                self.assertLessEqual(links[link_id]["confirmed_on"], edition["published_on"])
+            if "replaces" in edition:
+                old = editions[edition["replaces"]]
+                self.assertEqual((old["series"], old["month"]), (edition["series"], edition["month"]))
+                self.assertLess(old["published_on"], edition["published_on"])
+        for reference in chain["contract_references"]:
+            self.assertIn(reference["contract"], {row["id"] for row in season["contracts"]})
+            base, current = (editions[reference[field]] for field in ("base_edition", "current_edition"))
+            self.assertEqual(base["series"], current["series"])
+            self.assertEqual(current["week"], reference["period"])
+
     def test_sample_is_json_object(self):
         path = Path(__file__).parents[1] / "data" / "sample.json"
         value = json.loads(path.read_text(encoding="utf-8"))

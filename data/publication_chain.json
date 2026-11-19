@@ -1,0 +1,50 @@
+{
+  "series": [
+    {"series":"IDX-N","region":"N","service":"basic","initial_sku":"OLD1","initial_week":"2026-W40"},
+    {"series":"IDX-S","region":"S","service":"basic","initial_sku":"OLD1","initial_week":"2026-W40"},
+    {"series":"IDX-L","region":"N","service":"basic","initial_sku":"ST1","initial_week":"2026-W40"}
+  ],
+  "products": [{"sku":"NEW2","model":"cold-D","service":"installed","segment":"compact"}],
+  "observations": [
+    {"id":"P11","sku":"NEW1","region":"N","week":"2026-W45","status":"traded","price":526,"sales":19,"installation_fee":76},
+    {"id":"P12","sku":"NEW2","region":"N","week":"2026-W45","status":"traded","price":565,"sales":7,"installation_fee":98},
+    {"id":"P13","sku":"NEW2","region":"N","week":"2026-W46","status":"traded","price":573,"sales":13,"installation_fee":98},
+    {"id":"P14","sku":"OLD1","region":"S","week":"2026-W40","status":"traded","price":393,"sales":20},
+    {"id":"P15","sku":"OLD1","region":"S","week":"2026-W41","status":"offered","price":397,"sales":0},
+    {"id":"P16","sku":"NEW1","region":"S","week":"2026-W43","status":"traded","price":508,"sales":4,"installation_fee":80},
+    {"id":"P17","sku":"ST1","region":"N","week":"2026-W46","status":"traded","price":606,"sales":8},
+    {"id":"P18","sku":"NEW2","region":"N","week":"2026-W48","status":"traded","price":576,"sales":16,"installation_fee":98}
+  ],
+  "quality_claims": [
+    {"id":"Q-A","old":"OLD1","new":"NEW1","range":[8,15],"regions":["N","S"]},
+    {"id":"Q-B","old":"NEW1","new":"NEW2","range":[13,21],"regions":["N"]},
+    {"id":"Q-AB","old":"OLD1","new":"NEW2","range":[22,28],"regions":["N"]}
+  ],
+  "confirmed_links": [
+    {"id":"L-N1","series":"IDX-N","old_observation":"P3","new_observation":"P5","claim":"Q-A","confirmed_on":"2026-10-18"},
+    {"id":"L-N2","series":"IDX-N","old_observation":"P11","new_observation":"P12","claim":"Q-B","confirmed_on":"2026-11-12"},
+    {"id":"L-S1","series":"IDX-S","old_observation":"P15","new_observation":"P16","claim":"Q-A","confirmed_on":"2026-10-22","cross_gap":true,"buyer":"BU-S","merchant":"ME-S"},
+    {"id":"L-N3","series":"IDX-N","old_observation":"P3","new_observation":"P13","claim":"Q-AB","confirmed_on":"2026-11-28","cross_gap":true,"buyer":"BU-N","merchant":"ME-N"}
+  ],
+  "claim_corrections": [
+    {"claim":"Q-AB","id":"Q-AB2","range":[39,46],"received_on":"2026-12-03"}
+  ],
+  "fee_statements": [
+    {"id":"F6","observation":"P6","fee":98,"replaces":"F5","received_on":"2026-11-29"}
+  ],
+  "editions": [
+    {"id":"ED-O","batch":"ED-0","series":"IDX-N","month":"2026-10","week":"2026-W42","published_on":"2026-11-07","observations":["P1","P3","P5","P6"],"charges":["F1","F5"],"links":["L-N1"]},
+    {"id":"ED-N","batch":"ED-0","series":"IDX-N","month":"2026-11","week":"2026-W46","published_on":"2026-11-18","observations":["P1","P3","P5","P6","P11","P12","P13"],"charges":["F1","F5"],"links":["L-N1","L-N2"]},
+    {"id":"ED-L","batch":"ED-0","series":"IDX-L","month":"2026-11","week":"2026-W46","published_on":"2026-11-18","observations":["P9","P17"],"charges":[],"links":[]},
+    {"id":"ED-O2","batch":"ED-1","series":"IDX-N","month":"2026-10","week":"2026-W42","published_on":"2026-12-01","replaces":"ED-O","observations":["P1","P3","P5","P6"],"charges":["F1","F6"],"links":["L-N1"]},
+    {"id":"ED-N2","batch":"ED-1","series":"IDX-N","month":"2026-11","week":"2026-W46","published_on":"2026-12-02","replaces":"ED-N","observations":["P1","P3","P5","P6","P11","P12","P13"],"charges":["F1","F6"],"links":["L-N1","L-N2","L-N3"]}
+  ],
+  "contract_references": [
+    {"contract":"K1","period":"2026-W46","base_edition":"ED-O","current_edition":"ED-N","policy":"follow_reissues"},
+    {"contract":"K2","period":"2026-W46","base_edition":"ED-O","current_edition":"ED-N","policy":"keep_original"}
+  ],
+  "payment_windows": [
+    {"window":"B4","from":"2026-12-01","through":"2026-12-04"},
+    {"window":"B5","from":"2026-12-07","through":"2026-12-11"}
+  ]
+}

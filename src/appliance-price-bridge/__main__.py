@@ -1,9 +1,10 @@
-"""显示项目基本信息。"""
+"""兼容入口，见 ``appliance_price_bridge.__main__``。"""
 
-from . import __version__
-
-def main() -> None:
-    print(f"本地分析工作区 {__version__}")
+import sys
+from pathlib import Path
 
 if __name__ == "__main__":
-    main()
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    from appliance_price_bridge.__main__ import main
+
+    raise SystemExit(main())

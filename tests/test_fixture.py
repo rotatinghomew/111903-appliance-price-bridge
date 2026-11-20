@@ -1,7 +1,9 @@
-"""检查合成资料可读。"""
+"""基线资料检查。"""
+
 import json
 from pathlib import Path
 import unittest
+
 
 class FixtureTest(unittest.TestCase):
     def test_index_publications_link_in_order_to_regional_quotes_and_contracts(self):
@@ -100,6 +102,7 @@ class FixtureTest(unittest.TestCase):
         for dispute in value["notice_disputes"]:
             self.assertLessEqual(notices[dispute["notice"]]["issue_date"], dispute["received_on"])
             self.assertLessEqual(dispute["received_on"], dispute["release_signed_on"])
+
 
 if __name__ == "__main__":
     unittest.main()
